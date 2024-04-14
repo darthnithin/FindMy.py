@@ -60,7 +60,7 @@ There are pre-commit hooks included to help you with this, which you can set up 
 
 ```shell
 pip install poetry ruff
-poetry install  # this installs pre-commit into your environment
+python -m poetry install  # this installs pre-commit into your environment
 pre-commit install
 ```
 
