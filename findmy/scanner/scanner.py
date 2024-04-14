@@ -7,6 +7,7 @@ import time
 from typing import TYPE_CHECKING, Any, AsyncGenerator
 
 from bleak import BleakScanner
+from bleak.backends.winrt.scanner import _RawAdvData
 from typing_extensions import override
 
 from findmy.keys import HasPublicKey
@@ -172,8 +173,10 @@ class OfflineFindingScanner:
         apple_data = data.manufacturer_data.get(self.BLE_COMPANY_APPLE, b"")
         if not apple_data:
             return None
-
-        additional_data = device.details.get("props", {})
+        if isinstance(device.details, _RawAdvData):
+            additional_data = {}
+        else:
+            additional_data = device.details.get("props", {})
         return OfflineFindingDevice.from_payload(device.address, apple_data, additional_data)
 
     async def scan_for(
